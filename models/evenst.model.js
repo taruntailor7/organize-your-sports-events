@@ -42,15 +42,7 @@ const eventSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    acceptedUser : {
-        type: Array,
-        default: []
-    },
-    rejectedUser : {
-        type: Array,
-        default: []
-    },
-    requestedUser : {
+    players : {
         type: Array,
         default: []
     }
