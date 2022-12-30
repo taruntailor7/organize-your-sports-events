@@ -51,7 +51,8 @@ export const login = async (req, res) => {
             if(match){
                 let token = jwt.sign({
                     _id : userExists._id,
-                    email: userExists.email
+                    email: userExists.email,
+                    name: userExists.name
                 },JWT_SECRET)
 
                 // console.log(token,"token")
@@ -83,7 +84,7 @@ export const login = async (req, res) => {
             })
         }
     } catch (error) {
-        res.status(500).send({
+        return res.status(500).send({
             message: error
         });
     }
