@@ -6,8 +6,6 @@ mongoose.set('strictQuery', false);
 
 const mongo_url = process.env.MONGO_URL;
 
-console.log(mongo_url,"url....");
-
 const connection = async ()=>{
     await mongoose.connect(mongo_url,{
         useNewUrlParser: true,
