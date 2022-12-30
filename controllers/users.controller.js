@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
+import userModel from "../models/users.model.js";
 
 dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -9,12 +10,12 @@ export const regsiter = async (req, res) => {
     try {
         const user = req.body;
         let {name, email, password} = user;
-        
+
         let existingUser = await userModel.findOne({email});
 
         if(existingUser){
             return res.status(200).send({
-                status: false,
+                error: true,
                 message: 'User already exists'
             })
         } else{
@@ -26,7 +27,7 @@ export const regsiter = async (req, res) => {
             delete newUser.password;
 
             return res.send({
-                status:true,
+                error:false,
                 message: 'User successfully registered.'
             })
         }
