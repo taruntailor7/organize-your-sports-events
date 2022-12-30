@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import connection from "./config/db.js";
 
 const app = express();
 
@@ -12,7 +13,7 @@ app.get('/', (req, res) => {
 
 app.listen(3050, ()=>{
     try{
-        // connection();
+        connection();
         console.log("Server running on 3050");
     }
     catch(e){
