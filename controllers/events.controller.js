@@ -17,7 +17,6 @@ export const createEvent = async (req, res)=>{
                 title,desc,timing,players_limit,category,picture,userId
             });
             newEvent = newEvent.toJSON();
-
             return res.send({
                 error:false,
                 message: 'Event successfully created.'
