@@ -4,7 +4,7 @@ import userModel from "../models/users.model.js";
 export const createEvent = async (req, res)=>{
     try {
         let event = req.body;
-        let {title,desc,startTime,endTime,address,location,players_limit,category,picture,userId} = event;
+        let {title,desc,startDate,endDate,startTime,endTime,address,location,players_limit,category,picture,userId} = event;
 
         let eventExist = await eventModel.findOne({title});
         
@@ -15,7 +15,7 @@ export const createEvent = async (req, res)=>{
             })
         } else{
             let newEvent = await eventModel.create({
-                title,desc,startTime,endTime,address,location,players_limit,category,picture,userId
+                title,desc,startDate,endDate,startTime,endTime,address,location,players_limit,category,picture,userId
             });
             newEvent = newEvent.toJSON();
             return res.send({
