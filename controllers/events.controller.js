@@ -68,29 +68,40 @@ export const joinedEvent = async (req, res) => {
         let event = await eventModel.findById(eventId._id);
         let user = await userModel.findById(userId.userId);
 
-        event.players.push({
-            userId : user._id,
-            name:user.name,
-            email:user.email,
-            value:"requested"
+        let existEventForUser = user.events.find((event)=>{
+            return event.eventId.toString() === eventId._id;
         })
-        user.events.push({
-            eventId : event._id,
-            title:event.title,
-            desc: event.desc,
-            startTime: event.startTime,
-            endTime: event.endTime,
-            address:event.address,
-            lcoation:event.location,
-            players_limit: event.players_limit,
-            picture: event.picture,
-            category: event.category,
-            organizer: event.userId,
-            value:"requested"
-        })
-        await eventModel.findByIdAndUpdate(eventId._id,{
-            players:event.players
-        })
+
+        if(existEventForUser){
+            return res.send({
+                error: true,
+                message:"You have already requested for this event!"
+            })
+        } else{
+            event.players.push({
+                userId : user._id,
+                name:user.name,
+                email:user.email,
+                value:"requested"
+            })
+            user.events.push({
+                eventId : event._id,
+                title:event.title,
+                desc: event.desc,
+                startTime: event.startTime,
+                endTime: event.endTime,
+                address:event.address,
+                lcoation:event.location,
+                players_limit: event.players_limit,
+                picture: event.picture,
+                category: event.category,
+                organizer: event.userId,
+                value:"requested"
+            })
+            await eventModel.findByIdAndUpdate(eventId._id,{
+                players:event.players
+            })
+        }
 
         await userModel.findByIdAndUpdate(userId.userId,{
             events:user.events
@@ -100,9 +111,9 @@ export const joinedEvent = async (req, res) => {
             message:"You have requested to join this event!"
         })
     } catch (error) {
-        return res.send({
-            error:error,
-        })
+        return res.status(500).send({
+            message: error
+        });
     }
 }
 
@@ -111,33 +122,79 @@ export const accepetedEvent = async (req, res) => {
    try {
     let eventId = req.params;
     let userId = req.body;
-    // console.log(eventId._id,"event id")
-    // console.log(userId.userId,"user id")
 
     let event = await eventModel.findOne({_id:eventId._id});
     let user = await userModel.findOne({_id:userId.userId});
 
-    let player = event.players.filter((player)=>{
-        return player.userId === userId.userId;
+    let player = event.players.find((player)=>{
+        return player.userId.toString() === userId.userId;
+    });
+
+    player.value = "accepted"
+
+    await eventModel.findByIdAndUpdate(eventId._id,{
+        players:event.players
     })
-    // console.log(player,"new player arr")
 
-    // console.log(event.players,"players");
-    // console.log(user.events,"events")
+    let userEvent = user.events.find((event)=>{
+        return event.eventId.toString() === eventId._id;
+    })
 
-    res.send("okay")
+    userEvent.value = "accepted"
+    
+    await userModel.findByIdAndUpdate(userId.userId,{
+        events:user.events
+    })
 
+    res.send({
+        error:false,
+        message:"User has been accepted for this event!"
+    })
    } catch (error) {
-    return res.send({
-        error:error,
-    })
+        return res.status(500).send({
+            message: error
+        });
    }
-
 }
 
 //rejected
 export const rejectedEvent = async (req, res) => {
+    try {
+        let eventId = req.params;
+        let userId = req.body;
     
+        let event = await eventModel.findOne({_id:eventId._id});
+        let user = await userModel.findOne({_id:userId.userId});
+    
+        let player = event.players.find((player)=>{
+            return player.userId.toString() === userId.userId;
+        });
+    
+        player.value = "rejected"
+    
+        await eventModel.findByIdAndUpdate(eventId._id,{
+            players:event.players
+        })
+    
+        let userEvent = user.events.find((event)=>{
+            return event.eventId.toString() === eventId._id;
+        })
+    
+        userEvent.value = "rejected"
+        
+        await userModel.findByIdAndUpdate(userId.userId,{
+            events:user.events
+        })
+    
+        res.send({
+            error:false,
+            message:"User has been rejected for this event!"
+        })
+       } catch (error) {
+            return res.status(500).send({
+                message: error
+            });
+       }
 }
 
 
