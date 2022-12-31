@@ -1,14 +1,18 @@
 import express from 'express';
-import { createEvent, joinedEvent } from '../controllers/events.controller.js';
+import { accepetedEvent, createEvent, getAllEvents, getEvent, joinedEvent, rejectedEvent } from '../controllers/events.controller.js';
 
-const evenstRouter = express.Router();
+const eventRouter = express.Router();
 
-evenstRouter.post("/create", createEvent);
+eventRouter.post("/create", createEvent);
 
-evenstRouter.get("/");
+eventRouter.get("/", getAllEvents);
 
-evenstRouter.get("/:_id");
+eventRouter.get("/:_id", getEvent);
 
-evenstRouter.post("/requested/:_id", joinedEvent)
+eventRouter.post("/requested/:_id", joinedEvent)
 
-export default evenstRouter
+eventRouter.post("/accepted/:_id", accepetedEvent)
+
+eventRouter.post("/rejected/:_id", rejectedEvent)
+
+export default eventRouter

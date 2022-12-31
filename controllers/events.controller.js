@@ -30,6 +30,36 @@ export const createEvent = async (req, res)=>{
     }
 }
 
+export const getAllEvents = async (req, res) => {
+    try {
+        let events = await eventModel.find();
+        res.send({
+            error:false,
+            events: events
+        })
+    } catch (error) {
+        return res.status(500).send({
+            message: error
+        });
+    }
+}
+
+export const getEvent = async (req, res)=>{
+    try {
+        let eventId = req.params;
+        let event = await eventModel.findOne({_id:eventId._id})
+        res.send({
+            error:false,
+            event:event
+        })
+    } catch (error) {
+        return res.status(500).send({
+            message: error
+        });
+    }
+}
+
+//requested
 export const joinedEvent = async (req, res) => {
     try {
         let eventId = req.params;
@@ -75,3 +105,15 @@ export const joinedEvent = async (req, res) => {
         })
     }
 }
+
+//accepeted
+export const accepetedEvent = async (req, res) => {
+    
+}
+
+//rejected
+export const rejectedEvent = async (req, res) => {
+    
+}
+
+

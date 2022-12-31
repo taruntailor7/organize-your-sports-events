@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import connection from "./config/db.js";
 import userRouter from "./routes/users.routes.js";
-import evenstRouter from "./routes/events.routes.js";
+import eventRouter from "./routes/events.routes.js";
 
 const app = express();
 
@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
 })
 
 app.use("/auth", userRouter);
-app.use("/events", evenstRouter);
+app.use("/events", eventRouter);
 
 app.listen(3050, ()=>{
     try{
