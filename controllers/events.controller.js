@@ -32,39 +32,57 @@ export const createEvent = async (req, res)=>{
 
 export const joinedEvent = async (req, res) => {
     try {
-        console.log("object")
         let eventId = req.params;
-        let userId = req.body;
+        let userId = req.body; 
 
         let event = await eventModel.findById(eventId._id);
         let user = await userModel.findById(userId.userId);
 
-        console.log(event,"players")
-        console.log(user,"user")
-
-        event.players.push({
-            userId:userId.userId,
-            value:"requested"
-        })
-        user.events.push({
-            eventId:eventId._id,
-            value:"requested"
+        let eventExistForUser =  user.events.filter((event)=>{
+            return event.eventId === eventId._id
         })
 
-        console.log(event.players,"ppp")
-        console.log(user.events,"uuu")
-
-        await eventModel.findByIdAndUpdate(eventId._id,{
-            players:event.players
-        })
-
-        await userModel.findByIdAndUpdate(userId.userId,{
-            events:user.events
-        })
-
-        res.send({status:"success"})
-
+        if(eventExistForUser){
+            return res.send({
+                error:true,
+                message:"You have already requested for this event!"
+            })
+        } else{
+            event.players.push({
+                userId : user._id,
+                name:user.name,
+                email:user.email,
+                value:"requested"
+            })
+            user.events.push({
+                eventId : event._id,
+                title:event.title,
+                desc: event.desc,
+                startTime: event.startTime,
+                endTime: event.endTime,
+                address:event.address,
+                lcoation:event.location,
+                players_limit: event.players_limit,
+                picture: event.picture,
+                category: event.category,
+                organizer: event.userId,
+                value:"requested"
+            })
+            await eventModel.findByIdAndUpdate(eventId._id,{
+                players:event.players
+            })
+    
+            await userModel.findByIdAndUpdate(userId.userId,{
+                events:user.events
+            })
+            res.send({
+                error:false,
+                message:"You have requested to join this event!"
+            })
+        }
     } catch (error) {
-        res.send(error)
+        res.send({
+            error:error,
+        })
     }
 }
