@@ -1,0 +1,43 @@
+.form{
+    width:35%;
+    margin:auto;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border-radius: 10px;
+}
+h1{
+    text-align: center;
+}
+form{
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+label{
+    font-size: 20px;
+    margin-top: 20px;
+}
+input,button{
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+.loginBtn{
+    background-color: black;
+    color: #fff;
+    font-size: 18px;
+}
+.forRegister{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.registerLink{
+    text-decoration: none;
+    color:#5876d8;
+}
+.loadingImg{
+    margin-left: 550px;
+    margin-top: 100px;
+    align-self: center;
+}
