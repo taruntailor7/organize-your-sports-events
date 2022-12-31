@@ -14,7 +14,7 @@ let initstate = {
 export const Login = () => {
     const [user, setUser] = useState(initstate);
     const [loading, setLoading] = useState(false);
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const {token} = useSelector((state)=>state)
 
