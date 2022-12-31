@@ -14,4 +14,4 @@ const connection = async ()=>{
     console.log("Connection established")
 }
 
-export default connection;
+export default connection

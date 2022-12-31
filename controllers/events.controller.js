@@ -100,7 +100,7 @@ export const joinedEvent = async (req, res) => {
             message:"You have requested to join this event!"
         })
     } catch (error) {
-        res.send({
+        return res.send({
             error:error,
         })
     }
@@ -108,7 +108,31 @@ export const joinedEvent = async (req, res) => {
 
 //accepeted
 export const accepetedEvent = async (req, res) => {
-    
+   try {
+    let eventId = req.params;
+    let userId = req.body;
+    // console.log(eventId._id,"event id")
+    // console.log(userId.userId,"user id")
+
+    let event = await eventModel.findOne({_id:eventId._id});
+    let user = await userModel.findOne({_id:userId.userId});
+
+    let player = event.players.filter((player)=>{
+        return player.userId === userId.userId;
+    })
+    console.log(player,"new player arr")
+
+    // console.log(event.players,"players");
+    // console.log(user.events,"events")
+
+    res.send("okay")
+
+   } catch (error) {
+    return res.send({
+        error:error,
+    })
+   }
+
 }
 
 //rejected
