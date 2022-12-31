@@ -120,7 +120,7 @@ export const accepetedEvent = async (req, res) => {
     let player = event.players.filter((player)=>{
         return player.userId === userId.userId;
     })
-    console.log(player,"new player arr")
+    // console.log(player,"new player arr")
 
     // console.log(event.players,"players");
     // console.log(user.events,"events")
